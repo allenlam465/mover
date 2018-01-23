@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#sort.py - Application to move files from one directory to another. 
+#sort.py - Application to move files from one directory to another.
 
 import os
 import glob
@@ -51,9 +51,11 @@ class Window(Frame):
         self.entry2.insert(0,dest)
 
     def moveFile(self):
-        for file in glob.glob(self.entry1.get() + "/*." + self.entry3.get()):
-            print(file)
-            shutil.move(file,self.entry2.get())
+        expression = self.entry3.get()
+        for ext in expression.split(","):
+            for file in glob.glob(self.entry1.get() + "/*." + ext):
+                print(file)
+                shutil.move(file,self.entry2.get())
 
 root = Tk()
 root.geometry("350x150")
