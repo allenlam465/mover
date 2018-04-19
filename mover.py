@@ -1,23 +1,39 @@
 #!/usr/bin/env python3
-# mover.py - Application to move files from one directory to another.
+#Name: Allen Lam
+#Class: CS375 01
+#Date: 4-19-2018
+#
+#Application to move files from one directory to another.
+#
+#Run in terminal with :
+#
+#   python3 mover.py
+#   /.mover.py
+#
 
 import os
 import glob
 import shutil
 import errno
+
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import *
 
-
 class MainWindow(Frame):
+    """Initilizes the class MainWindow for tkinter GUI.
+
+        Args:
+            master (str): Defines parent widget if any.
+    """
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master = master
         self.__init__window()
 
-    # Creates window for user interaction.
+    # Creates the window for user interaction.
     def __init__window(self):
+        """Creates the GUI window based on grid system in tkinter."""
         self.master.title("Mover")
         self.pack(fill=BOTH, expand=1)
 
@@ -26,7 +42,7 @@ class MainWindow(Frame):
         Label(self, text="Destination:").grid(row=1)
         Label(self, text="Extension:").grid(row=2)
 
-        # Allow user input or browse with button.
+        # Allow user input or browse with button for source/destination location.
         self.entry1 = Entry(self)
         self.entry2 = Entry(self)
         self.entry3 = Entry(self)
@@ -34,6 +50,7 @@ class MainWindow(Frame):
         self.entry2.grid(row=1, column=1)
         self.entry3.grid(row=2, column=1)
 
+        #Buttons on GUI.
         browseButton = Button(self, text="Browse", command=self.loadSource)
         browseButton1 = Button(self, text="Browse", command=self.loadDest)
         applyButton = Button(self, text="Apply", command=self.moveFile)
@@ -44,19 +61,27 @@ class MainWindow(Frame):
         quitButton.grid(row=4, column=1)
 
     def exit(self):
+        """Exits program."""
         exit()
 
     def loadSource(self):
+        """Loads source directory using tkinter filedialog."""
         cwd = filedialog.askdirectory()
         self.entry1.delete(0, END)
         self.entry1.insert(0, cwd)
 
     def loadDest(self):
+        """Loads destination directory using tkinter filedialog."""
         dest = filedialog.askdirectory()
         self.entry2.delete(0, END)
         self.entry2.insert(0, dest)
 
     def moveFile(self):
+        """Move files with the source and destination defined by user.
+        
+            Raises:
+                shutilError: If file already exists in destination folder.
+        """
         expression = self.entry3.get()
         file_list = []
 
@@ -79,18 +104,40 @@ class MainWindow(Frame):
 
         self.listWindow(file_list)
 
+    #New window to show all moved files.
     def listWindow(self, files):
+        """Creates new window that lists all files moved.
+
+        Args:
+            files (:obj:`list` of :obj:`str`): List of all files moved.
+
+        """
         list = '\n'.join(files)
         messagebox.showinfo("Moved Files", list)
 
     def errorWindow(self, text):
+        """Creates new window that shows description of error.
+
+        Args:
+            text (str): Description of error occurance.
+
+        """
         messagebox.showerror("Error", text)
 
     def owConfirm(self, text):
+       """Window that appear to allow user to decide to overwrite an existing file.
+
+        Args:
+            text (str): File name.
+
+        Returns:
+            bool: Return value based on user choice. Yes for true. No for false.
+
+        """
         return messagebox.askyesno("Overwrite File", text +
                                    "exist in destination directory. Overwrite?")
 
-
+#Main
 root = Tk()
 root.geometry("350x150")
 app = MainWindow(root)
