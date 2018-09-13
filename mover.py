@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-#Name: Allen Lam
-#Class: CS375 01
-#Date: 4-19-2018
 #
 #Application to move files from one directory to another.
 #
