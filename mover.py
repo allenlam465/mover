@@ -15,6 +15,7 @@ import errno
 
 from tkinter import filedialog
 from tkinter import messagebox
+from sys import platform
 from tkinter import *
 
 class MainWindow(Frame):
@@ -51,11 +52,9 @@ class MainWindow(Frame):
         browseButton = Button(self, text="Browse", command=self.loadSource)
         browseButton1 = Button(self, text="Browse", command=self.loadDest)
         applyButton = Button(self, text="Apply", command=self.moveFile)
-        quitButton = Button(self, text="Quit", command=self.exit)
-        browseButton.grid(row=0, column=2)
-        browseButton1.grid(row=1, column=2)
-        applyButton.grid(row=3, column=1)
-        quitButton.grid(row=4, column=1)
+        browseButton.grid(row=0, column=2, padx=5, pady=5)
+        browseButton1.grid(row=1, column=2, padx=5, pady=5)
+        applyButton.grid(row=3, column=1, padx=5, pady=5)
 
     def exit(self):
         """Exits program."""
@@ -131,11 +130,16 @@ class MainWindow(Frame):
             bool: Return value based on user choice. Yes for true. No for false.
 
         """
-        return messagebox.askyesno("Overwrite File", text +
-                                   "exist in destination directory. Overwrite?")
+       return messagebox.askyesno("Overwrite File", text + "exist in destination directory. Overwrite?")
 
 #Main
 root = Tk()
-root.geometry("350x150")
+
+if platform == 'darwin' or platform == 'linux':
+    root.geometry("350x150")
+elif platform == 'win32':
+    root.geometry("250x130")
+
+root.resizable(width=False, height=False)
 app = MainWindow(root)
 root.mainloop()
